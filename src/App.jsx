@@ -15,6 +15,7 @@ import DcaBot from './components/DcaBot'
 import Edit from './components/Edit'
 import Chatbot from './components/Chatbot'
 import P2p from './components/P2p'
+import P2p_payment from './components/P2p_payment'
 function App() {
   return (
     <>
@@ -35,6 +36,7 @@ function App() {
       <Route path='/dcabot' element={<DcaBot/>}></Route>
       <Route path='/edit' element={<Edit/>}></Route>
       <Route path='/p2pMarket' element={<P2p/>}></Route>
+      <Route path='/p2p_payment' element={<P2p_payment/>}></Route>
       
 
 

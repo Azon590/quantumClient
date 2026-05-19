@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const dummyUsers = [
   { id: 1, name: "Alex M.", coin: "USDT", price: 150, limit: "5,000 - 50,000 KES", orders: 120, completion: 98 },
@@ -22,11 +23,11 @@ function getAvatarColor(name) {
     "bg-pink-500",
     "bg-yellow-500",
   ];
-  const index = name.charCodeAt(0) % colors.length;
-  return colors[index];
+  return colors[name.charCodeAt(0) % colors.length];
 }
 
 function P2p() {
+  const navigate = useNavigate();
   const [selectedCoin, setSelectedCoin] = useState("ALL");
 
   const filteredUsers =
@@ -71,8 +72,6 @@ function P2p() {
 
             {/* HEADER */}
             <div className="flex items-center gap-3 mb-3">
-
-              {/* AVATAR */}
               <div
                 className={`w-10 h-10 flex items-center justify-center rounded-full text-white font-bold ${getAvatarColor(
                   user.name
@@ -83,7 +82,7 @@ function P2p() {
 
               <div>
                 <h2 className="text-lg font-semibold">{user.name}</h2>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
+                <div className="text-xs text-gray-400 flex gap-2">
                   <span>Orders: {user.orders}</span>
                   <span>•</span>
                   <span className="text-green-400">
@@ -93,32 +92,34 @@ function P2p() {
               </div>
             </div>
 
-            {/* MPESA BADGE */}
+            {/* MPESA */}
             <div className="mb-3">
               <span className="bg-green-600 text-xs px-3 py-1 rounded-full">
                 MPesa Available
               </span>
             </div>
 
-            {/* COIN */}
+            {/* DETAILS */}
             <p className="text-gray-400">
               Selling: <span className="text-white">{user.coin}</span>
             </p>
 
-            {/* PRICE */}
             <p className="mt-2 text-green-400 font-bold">
               Price: {user.price.toLocaleString()} KES
             </p>
 
-            {/* LIMIT */}
             <p className="text-sm text-gray-400">
               Limit: {user.limit}
             </p>
 
-            {/* BUTTON */}
-            <button className="mt-4 w-full bg-green-500 py-2 rounded-lg hover:bg-green-600">
+            {/* BUY BUTTON */}
+            <button
+              onClick={() => navigate("/p2p_payment", { state: user })}
+              className="mt-4 w-full bg-green-500 py-2 rounded-lg hover:bg-green-600"
+            >
               Buy {user.coin}
             </button>
+
           </div>
         ))}
       </div>
