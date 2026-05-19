@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DashboardNavbar from "./Navbar"
 
 const dummyUsers = [
   { id: 1, name: "Alex M.", coin: "USDT", price: 150, limit: "5,000 - 50,000 KES", orders: 120, completion: 98 },
@@ -37,7 +38,7 @@ function P2p() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6">
-
+        <DashboardNavbar />
       {/* TITLE */}
       <h1 className="text-3xl font-bold text-center">
         P2P Crypto Marketplace
