@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import '../App.css';
-
+import "../App.css";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -28,8 +27,48 @@ export default function Home() {
     { name: "AVAX", price: "$34.56", change: "2.34%" },
   ];
 
+  const reviews = [
+    {
+      name: "James K.",
+      role: "Crypto Investor",
+      review:
+        "Eccoearn completely changed how I trade. The automation is smooth and I’ve seen consistent growth.",
+    },
+    {
+      name: "Sarah W.",
+      role: "Forex Trader",
+      review:
+        "The platform is fast and reliable. I love how easy it is to manage both crypto and forex in one place.",
+    },
+    {
+      name: "Brian M.",
+      role: "Beginner Trader",
+      review:
+        "As a beginner, this platform made trading simple. The UI is clean and easy to understand.",
+    },
+    {
+      name: "Linda A.",
+      role: "Investor",
+      review:
+        "The AI trading features are impressive. It feels like having a smart assistant managing my trades 24/7.",
+    },
+    {
+      name: "David O.",
+      role: "Crypto Enthusiast",
+      review:
+        "Withdrawals and deposits are smooth. The platform feels professional and trustworthy.",
+    },
+    {
+      name: "Nancy J.",
+      role: "Day Trader",
+      review:
+        "Best trading dashboard I’ve used so far. Everything is fast and responsive.",
+    },
+  ];
+
   return (
     <div className="bg-slate-900 text-white">
+
       {/* NAVBAR */}
       <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
         <h1 className="text-2xl font-bold text-blue-400">Eccoearn</h1>
@@ -49,7 +88,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* SCROLLING FOREX TICKER */}
+      {/* FOREX TICKER */}
       <section className="overflow-hidden border-b border-slate-800 bg-slate-950">
         <div className="ticker whitespace-nowrap flex animate-ticker">
           {[...forexPairs, ...forexPairs].map((item, index) => (
@@ -60,11 +99,11 @@ export default function Home() {
               <p className="font-semibold">{item.pair}</p>
               <p>{item.price}</p>
               <p
-                className={`${
+                className={
                   parseFloat(item.change) >= 0
                     ? "text-green-400"
                     : "text-red-400"
-                }`}
+                }
               >
                 {item.change}
               </p>
@@ -74,12 +113,11 @@ export default function Home() {
       </section>
 
       {/* HERO */}
-      <section className="text-center py-24 px-6 bg-slate-950" >
-        <img src="/eco background.jpeg" alt="back"/>
+      <section className="text-center py-24 px-6 bg-slate-950">
+        <img src="/eco background.jpeg" alt="back" />
         <h2 className="text-5xl font-bold mb-6">Grow Your Wealth Faster</h2>
         <p className="text-gray-400 max-w-3xl mx-auto mb-10">
-          Our platform uses AI-driven trading tech to maximize your return on
-          investment (ROI)—trusted by investors worldwide.
+          Our platform uses AI-driven trading tech to maximize your return on investment (ROI)—trusted by investors worldwide.
         </p>
         <div className="space-x-4">
           <button
@@ -122,25 +160,11 @@ export default function Home() {
           >
             <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
             <p className="text-gray-400 mb-6">{item.text}</p>
-            <div className="space-x-4">
-              <button
-                onClick={() => navigate("/auth")}
-                className="text-blue-400 hover:underline"
-              >
-                Get Started
-              </button>
-              <button
-                onClick={() => navigate("/auth")}
-                className="text-gray-400 hover:underline"
-              >
-                Sign In
-              </button>
-            </div>
           </div>
         ))}
       </section>
 
-      {/* SCROLLING CRYPTO TICKER */}
+      {/* CRYPTO TICKER */}
       <section className="overflow-hidden border-y border-slate-800 bg-slate-950">
         <div className="ticker whitespace-nowrap flex animate-ticker">
           {[...cryptos, ...cryptos].map((coin, index) => (
@@ -151,11 +175,11 @@ export default function Home() {
               <p className="font-semibold">{coin.name}</p>
               <p>{coin.price}</p>
               <p
-                className={`${
+                className={
                   parseFloat(coin.change) >= 0
                     ? "text-green-400"
                     : "text-red-400"
-                }`}
+                }
               >
                 {coin.change}
               </p>
@@ -168,24 +192,14 @@ export default function Home() {
       <section className="px-8 py-24 text-center bg-slate-900">
         <h2 className="text-4xl font-bold mb-6">Why Choose Eccoearn?</h2>
         <p className="text-gray-400 max-w-3xl mx-auto mb-12">
-          Experience the ultimate trading platform with cutting-edge features
-          designed for your success.
+          Experience the ultimate trading platform with cutting-edge features designed for your success.
         </p>
 
         <div className="grid md:grid-cols-3 gap-10">
           {[
-            {
-              title: "Lightning Fast",
-              text: "AI-powered algorithms execute trades in milliseconds.",
-            },
-            {
-              title: "Bank-Level Security",
-              text: "Enterprise-grade encryption protects your funds and data.",
-            },
-            {
-              title: "24/7 Trading",
-              text: "Automated systems work around the clock for you.",
-            },
+            { title: "Lightning Fast", text: "AI-powered algorithms execute trades in milliseconds." },
+            { title: "Bank-Level Security", text: "Enterprise-grade encryption protects your funds and data." },
+            { title: "24/7 Trading", text: "Automated systems work around the clock for you." },
           ].map((item, i) => (
             <div
               key={i}
@@ -204,25 +218,66 @@ export default function Home() {
         <p className="mb-10">
           Join thousands of traders multiplying their portfolios with Eccoearn.
         </p>
-        <div className="space-x-4">
-          <button
-            onClick={() => navigate("/auth")}
-            className="bg-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-500"
-          >
-            Create Free Account
-          </button>
-          <button
-            onClick={() => navigate("/auth")}
-            className="border border-blue-600 px-8 py-3 rounded-lg hover:bg-blue-800"
-          >
-            Sign In
-          </button>
+        <button
+          onClick={() => navigate("/auth")}
+          className="bg-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-500"
+        >
+          Create Free Account
+        </button>
+      </section>
+
+      {/* ⭐ REVIEWS (IMPROVED - ADDED AVATARS + POLISH) */}
+      <section className="px-8 py-24 bg-slate-900">
+        <h2 className="text-4xl font-bold text-center mb-4">
+          What Our Users Say
+        </h2>
+
+        <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+          Thousands of traders trust Eccoearn for reliable automated trading and consistent performance.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {reviews.map((r, i) => {
+            const initials = r.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("");
+
+            return (
+              <div
+                key={i}
+                className="bg-slate-950 p-6 rounded-xl border border-slate-800 hover:border-blue-500 transition duration-300"
+              >
+                {/* STARS */}
+                <div className="text-yellow-400 mb-3">
+                  ★★★★★
+                </div>
+
+                {/* REVIEW */}
+                <p className="text-gray-300 mb-5 italic">
+                  "{r.review}"
+                </p>
+
+                {/* USER */}
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
+                    {initials}
+                  </div>
+
+                  <div>
+                    <p className="font-semibold">{r.name}</p>
+                    <p className="text-sm text-gray-400">{r.role}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* FOOTER */}
       <footer className="text-center py-6 text-gray-400 border-t border-slate-800 bg-slate-900">
-        © 2020 Eccoearn. All rights reserved.
+        © 2020 Quantum. All rights reserved.
       </footer>
     </div>
   );
