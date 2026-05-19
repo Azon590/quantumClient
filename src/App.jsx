@@ -14,6 +14,7 @@ import Configure from './components/Configure'
 import DcaBot from './components/DcaBot'
 import Edit from './components/Edit'
 import Chatbot from './components/Chatbot'
+import P2p from './components/P2p'
 function App() {
   return (
     <>
@@ -33,6 +34,7 @@ function App() {
       <Route path="/configure/:botName" element={<Configure />} ></Route>
       <Route path='/dcabot' element={<DcaBot/>}></Route>
       <Route path='/edit' element={<Edit/>}></Route>
+      <Route path='/p2pMarket' element={<P2p/>}></Route>
       
 
 
