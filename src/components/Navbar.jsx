@@ -79,7 +79,7 @@ export default function DashboardNavbar() {
           <div className="w-7 h-7 bg-green-500 rounded-full flex items-center justify-center text-black font-bold">
             +
           </div>
-          Eccoearn
+          Quantum
         </Link>
 
         {/* Desktop Menu */}

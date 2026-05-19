@@ -71,7 +71,7 @@ export default function Home() {
 
       {/* NAVBAR */}
       <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
-        <h1 className="text-2xl font-bold text-blue-400">Eccoearn</h1>
+        <h1 className="text-2xl font-bold text-blue-400">Quantum</h1>
         <div className="space-x-6">
           <button
             onClick={() => navigate("/auth")}
