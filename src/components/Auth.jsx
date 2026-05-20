@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AuthForm() {
@@ -24,6 +26,11 @@ export default function AuthForm() {
     confirmPassword: "",
   });
 
+  const [verificationCode, setVerificationCode] = useState("");
+  const [generatedCode, setGeneratedCode] = useState("");
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [sendingCode, setSendingCode] = useState(false);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -34,11 +41,13 @@ export default function AuthForm() {
         const res = await fetch(
           "https://restcountries.com/v3.1/all?fields=name,idd,flags"
         );
+
         const data = await res.json();
 
         const formatted = data
           .map((c) => {
             if (!c.idd?.root || !c.idd?.suffixes) return null;
+
             return {
               name: c.name.common,
               code: c.idd.root + c.idd.suffixes[0],
@@ -49,6 +58,7 @@ export default function AuthForm() {
           .sort((a, b) => a.name.localeCompare(b.name));
 
         setCountries(formatted);
+
         setSelectedCountry(
           formatted.find((c) => c.name === "Kenya") || formatted[0]
         );
@@ -59,17 +69,8 @@ export default function AuthForm() {
             code: "+254",
             flag: "https://flagcdn.com/w20/ke.png",
           },
-          {
-            name: "United States",
-            code: "+1",
-            flag: "https://flagcdn.com/w20/us.png",
-          },
-          {
-            name: "United Kingdom",
-            code: "+44",
-            flag: "https://flagcdn.com/w20/gb.png",
-          },
         ];
+
         setCountries(fallback);
         setSelectedCountry(fallback[0]);
       }
@@ -78,37 +79,100 @@ export default function AuthForm() {
     fetchCountries();
   }, []);
 
-  /* ---------------- CLOSE DROPDOWN ON OUTSIDE CLICK ---------------- */
+  /* ---------------- CLOSE DROPDOWN ---------------- */
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setOpenDropdown(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  /* ---------------- HANDLERS ---------------- */
+  /* ---------------- INPUT HANDLERS ---------------- */
   const handleLoginChange = (e) =>
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+    setLoginForm({
+      ...loginForm,
+      [e.target.name]: e.target.value,
+    });
 
   const handleSignupChange = (e) => {
-    setSignupForm({ ...signupForm, [e.target.name]: e.target.value });
+    setSignupForm({
+      ...signupForm,
+      [e.target.name]: e.target.value,
+    });
+
     setError("");
     setSuccess("");
+  };
+
+  /* ---------------- SEND EMAIL VERIFICATION ---------------- */
+  const sendVerificationCode = async () => {
+    setError("");
+    setSuccess("");
+
+    if (!signupForm.email) {
+      setError("Please enter your email");
+      return;
+    }
+
+    const code = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+
+    setGeneratedCode(code);
+    setSendingCode(true);
+
+    try {
+      await emailjs.send(
+        "service_dk9csjp",
+        "template_lgsd1ga",
+        {
+          user_name: signupForm.fullName || "User",
+          verification_code: code,
+          to_email: signupForm.email,
+        },
+        "rHMCfjJwQ86mQP0Cp"
+      );
+
+      setSuccess("Verification code sent successfully!");
+    } catch (err) {
+      console.log(err);
+      setError("Failed to send verification code");
+    } finally {
+      setSendingCode(false);
+    }
+  };
+
+  /* ---------------- VERIFY CODE ---------------- */
+  const verifyCode = () => {
+    if (verificationCode === generatedCode) {
+      setEmailVerified(true);
+      setSuccess("Email verified successfully!");
+      setError("");
+    } else {
+      setEmailVerified(false);
+      setError("Invalid verification code");
+    }
   };
 
   /* ---------------- LOGIN ---------------- */
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
     setSuccess("");
 
     try {
       const res = await fetch(`${API_URL}/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(loginForm),
       });
 
@@ -120,10 +184,16 @@ export default function AuthForm() {
       }
 
       localStorage.setItem("user", JSON.stringify(data.user));
-      if (data.token) localStorage.setItem("token", data.token);
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
 
       setSuccess("Login successful!");
-      setTimeout(() => navigate("/dashboard"), 500);
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
     } catch {
       setError("Network error. Try again later.");
     }
@@ -132,8 +202,14 @@ export default function AuthForm() {
   /* ---------------- SIGNUP ---------------- */
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
     setSuccess("");
+
+    if (!emailVerified) {
+      setError("Please verify your email first");
+      return;
+    }
 
     if (signupForm.password !== signupForm.confirmPassword) {
       setError("Passwords do not match");
@@ -151,7 +227,9 @@ export default function AuthForm() {
     try {
       const res = await fetch(`${API_URL}/signup`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
@@ -162,7 +240,8 @@ export default function AuthForm() {
         return;
       }
 
-      setSuccess("Signup successful! You can now log in.");
+      setSuccess("Signup successful! You can now login.");
+
       setSignupForm({
         fullName: "",
         email: "",
@@ -170,6 +249,11 @@ export default function AuthForm() {
         password: "",
         confirmPassword: "",
       });
+
+      setVerificationCode("");
+      setGeneratedCode("");
+      setEmailVerified(false);
+
       setActiveTab("login");
     } catch {
       setError("Network error. Try again later.");
@@ -183,23 +267,29 @@ export default function AuthForm() {
         <h1 className="text-3xl font-bold text-white text-center mb-2">
           Welcome to Fentibot
         </h1>
+
         <p className="text-gray-300 text-center mb-6">
           Your trusted platform for cryptocurrency trading
         </p>
 
-        {/* Tabs */}
+        {/* TABS */}
         <div className="flex mb-6 bg-gray-800 rounded-lg overflow-hidden">
           <button
-            className={`flex-1 py-2 text-white ${
-              activeTab === "login" ? "bg-green-500" : ""
+            className={`flex-1 py-2 text-white transition ${
+              activeTab === "login"
+                ? "bg-green-500"
+                : "hover:bg-gray-700"
             }`}
             onClick={() => setActiveTab("login")}
           >
             Login
           </button>
+
           <button
-            className={`flex-1 py-2 text-white ${
-              activeTab === "signup" ? "bg-green-500" : ""
+            className={`flex-1 py-2 text-white transition ${
+              activeTab === "signup"
+                ? "bg-green-500"
+                : "hover:bg-gray-700"
             }`}
             onClick={() => setActiveTab("signup")}
           >
@@ -207,10 +297,16 @@ export default function AuthForm() {
           </button>
         </div>
 
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {success && <p className="text-green-500 text-center">{success}</p>}
+        {/* ALERTS */}
+        {error && (
+          <p className="text-red-500 text-center mb-4">{error}</p>
+        )}
 
-        {/* LOGIN */}
+        {success && (
+          <p className="text-green-500 text-center mb-4">{success}</p>
+        )}
+
+        {/* LOGIN FORM */}
         {activeTab === "login" && (
           <form onSubmit={handleLoginSubmit} className="space-y-4">
             <input
@@ -219,23 +315,25 @@ export default function AuthForm() {
               placeholder="Email"
               value={loginForm.email}
               onChange={handleLoginChange}
-              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg outline-none"
             />
+
             <input
               name="password"
               type="password"
               placeholder="Password"
               value={loginForm.password}
               onChange={handleLoginChange}
-              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg outline-none"
             />
-            <button className="w-full bg-green-500 py-3 rounded-lg text-white">
+
+            <button className="w-full bg-green-500 hover:bg-green-600 transition py-3 rounded-lg text-white font-semibold">
               Login
             </button>
           </form>
         )}
 
-        {/* SIGNUP */}
+        {/* SIGNUP FORM */}
         {activeTab === "signup" && (
           <form onSubmit={handleSignupSubmit} className="space-y-4">
             <input
@@ -243,19 +341,63 @@ export default function AuthForm() {
               placeholder="Full Name"
               value={signupForm.fullName}
               onChange={handleSignupChange}
-              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg"
-            />
-            <input
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={signupForm.email}
-              onChange={handleSignupChange}
-              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg outline-none"
             />
 
-            {/* COUNTRY PICKER */}
-            <div className="flex gap-2 relative" ref={dropdownRef}>
+            {/* EMAIL */}
+            <div className="space-y-2">
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={signupForm.email}
+                onChange={handleSignupChange}
+                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg outline-none"
+              />
+
+              <button
+                type="button"
+                onClick={sendVerificationCode}
+                disabled={sendingCode}
+                className="w-full bg-blue-500 hover:bg-blue-600 transition py-3 rounded-lg text-white"
+              >
+                {sendingCode
+                  ? "Sending Code..."
+                  : "Send Verification Code"}
+              </button>
+
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Enter verification code"
+                  value={verificationCode}
+                  onChange={(e) =>
+                    setVerificationCode(e.target.value)
+                  }
+                  className="flex-1 px-4 py-3 bg-gray-800 text-white rounded-lg outline-none"
+                />
+
+                <button
+                  type="button"
+                  onClick={verifyCode}
+                  className="bg-green-500 hover:bg-green-600 px-4 rounded-lg text-white"
+                >
+                  Verify
+                </button>
+              </div>
+
+              {emailVerified && (
+                <p className="text-green-400 text-sm">
+                  ✓ Email verified successfully
+                </p>
+              )}
+            </div>
+
+            {/* PHONE */}
+            <div
+              className="flex gap-2 relative"
+              ref={dropdownRef}
+            >
               <button
                 type="button"
                 onClick={() => setOpenDropdown(!openDropdown)}
@@ -268,6 +410,7 @@ export default function AuthForm() {
                       alt={selectedCountry.name}
                       className="w-5 h-4 rounded"
                     />
+
                     <span>{selectedCountry.code}</span>
                   </>
                 )}
@@ -284,9 +427,19 @@ export default function AuthForm() {
                       }}
                       className="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 cursor-pointer text-white"
                     >
-                      <img src={c.flag} className="w-5 h-4 rounded" />
-                      <span className="flex-1 text-sm">{c.name}</span>
-                      <span className="text-gray-400 text-sm">{c.code}</span>
+                      <img
+                        src={c.flag}
+                        alt={c.name}
+                        className="w-5 h-4 rounded"
+                      />
+
+                      <span className="flex-1 text-sm">
+                        {c.name}
+                      </span>
+
+                      <span className="text-gray-400 text-sm">
+                        {c.code}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -297,28 +450,30 @@ export default function AuthForm() {
                 placeholder="Phone Number"
                 value={signupForm.phone}
                 onChange={handleSignupChange}
-                className="flex-1 px-4 py-3 rounded-lg bg-gray-800 text-white"
+                className="flex-1 px-4 py-3 rounded-lg bg-gray-800 text-white outline-none"
               />
             </div>
 
+            {/* PASSWORDS */}
             <input
               name="password"
               type="password"
               placeholder="Password"
               value={signupForm.password}
               onChange={handleSignupChange}
-              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg outline-none"
             />
+
             <input
               name="confirmPassword"
               type="password"
               placeholder="Confirm Password"
               value={signupForm.confirmPassword}
               onChange={handleSignupChange}
-              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg outline-none"
             />
 
-            <button className="w-full bg-green-500 py-3 rounded-lg text-white">
+            <button className="w-full bg-green-500 hover:bg-green-600 transition py-3 rounded-lg text-white font-semibold">
               Sign Up
             </button>
           </form>
