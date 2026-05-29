@@ -16,17 +16,14 @@ export default function DashboardNavbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Get user from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // Redirect if not logged in
   useEffect(() => {
     if (!user) {
       navigate("/login", { replace: true });
     }
   }, [user, navigate]);
 
-  // Navigation items with unique keys
   const menuItems = [
     { name: "Dashboard", icon: FaHome, path: "/dashboard", key: "dashboard" },
     { name: "Markets", icon: FaChartLine, path: "/market", key: "markets" },
@@ -36,17 +33,19 @@ export default function DashboardNavbar() {
       path: "/dashboard?tab=spot",
       key: "spot",
     },
+
+    // ✅ CHANGED HERE (Futures → P2P)
     {
-      name: "Futures",
+      name: "P2P",
       icon: FaExchangeAlt,
-      path: "/dashboard?tab=futures",
-      key: "futures",
+      path: "/p2pMarket",
+      key: "p2p",
     },
+
     { name: "Bots", icon: FaRobot, path: "/bot", key: "bots" },
     { name: "My Profile", icon: FaUser, path: "/profile", key: "profile" },
   ];
 
-  // Show Edit Users only for admin
   if (user?.role === "admin") {
     menuItems.push({
       name: "Edit Users",
@@ -56,7 +55,6 @@ export default function DashboardNavbar() {
     });
   }
 
-  // Active logic
   const isActive = (key) => {
     const params = new URLSearchParams(location.search);
     const currentTab = params.get("tab");
@@ -146,9 +144,7 @@ export default function DashboardNavbar() {
               key={item.key}
               to={item.path}
               className={`flex flex-col items-center gap-1 text-xs transition ${
-                isActive(item.key)
-                  ? "text-green-400"
-                  : "hover:text-white"
+                isActive(item.key) ? "text-green-400" : "hover:text-white"
               }`}
             >
               <Icon size={20} />
