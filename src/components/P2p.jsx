@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DashboardNavbar from "./Navbar"
+import DashboardNavbar from "./Navbar";
 
 const dummyUsers = [
-  { id: 1, name: "Alex M.", coin: "USDT", price: 150, limit: "5,000 - 50,000 KES", orders: 120, completion: 98 },
-  { id: 2, name: "Brian K.", coin: "BTC", price: 9000000, limit: "10,000 - 200,000 KES", orders: 45, completion: 95 },
-  { id: 3, name: "Sarah W.", coin: "USDT", price: 152, limit: "2,000 - 30,000 KES", orders: 210, completion: 99 },
-  { id: 4, name: "David O.", coin: "ETH", price: 480000, limit: "20,000 - 500,000 KES", orders: 80, completion: 96 },
-  { id: 5, name: "John M.", coin: "USDT", price: 149, limit: "1,000 - 100,000 KES", orders: 300, completion: 97 },
-  { id: 6, name: "Linda A.", coin: "BTC", price: 9100000, limit: "15,000 - 300,000 KES", orders: 65, completion: 94 },
-  { id: 7, name: "Kevin P.", coin: "USDT", price: 151, limit: "3,000 - 80,000 KES", orders: 150, completion: 98 },
-  { id: 8, name: "Grace N.", coin: "ETH", price: 475000, limit: "10,000 - 250,000 KES", orders: 90, completion: 97 },
-  { id: 9, name: "Mark T.", coin: "USDT", price: 150, limit: "5,000 - 120,000 KES", orders: 170, completion: 96 },
-  { id: 10, name: "Nancy J.", coin: "BTC", price: 9050000, limit: "25,000 - 400,000 KES", orders: 55, completion: 95 },
+  { id: 1, name: "Alex M.", coin: "USDT", price: 150, limit: "5,000 - 50,000", orders: 120, completion: 98 },
+  { id: 2, name: "Brian K.", coin: "BTC", price: 9000000, limit: "10,000 - 200,000", orders: 45, completion: 95 },
+  { id: 3, name: "Sarah W.", coin: "USDT", price: 152, limit: "2,000 - 30,000", orders: 210, completion: 99 },
+  { id: 4, name: "David O.", coin: "ETH", price: 480000, limit: "20,000 - 500,000", orders: 80, completion: 96 },
+  { id: 5, name: "John M.", coin: "USDT", price: 149, limit: "1,000 - 100,000", orders: 300, completion: 97 },
+  { id: 6, name: "Linda A.", coin: "BTC", price: 9100000, limit: "15,000 - 300,000", orders: 65, completion: 94 },
+  { id: 7, name: "Kevin P.", coin: "USDT", price: 151, limit: "3,000 - 80,000", orders: 150, completion: 98 },
+  { id: 8, name: "Grace N.", coin: "ETH", price: 475000, limit: "10,000 - 250,000", orders: 90, completion: 97 },
+  { id: 9, name: "Mark T.", coin: "USDT", price: 150, limit: "5,000 - 120,000", orders: 170, completion: 96 },
+  { id: 10, name: "Nancy J.", coin: "BTC", price: 9050000, limit: "25,000 - 400,000", orders: 55, completion: 95 },
 ];
 
-function getAvatarColor(name) {
+// supported currencies
+const currencies = [
+  { code: "KES", symbol: "KSh" },
+  { code: "UGX", symbol: "USh" },
+  { code: "TZS", symbol: "TSh" },
+  { code: "USD", symbol: "$" },
+  { code: "ZAR", symbol: "R" },
+  { code: "NGN", symbol: "₦" },
+  { code: "AUD", symbol: "A$" },
+  { code: "GBP", symbol: "£" },
+  { code: "CAD", symbol: "C$" },
+];
+
+function getAvatarColor(name = "A") {
   const colors = [
     "bg-red-500",
     "bg-blue-500",
@@ -29,27 +42,32 @@ function getAvatarColor(name) {
 
 function P2p() {
   const navigate = useNavigate();
+
   const [selectedCoin, setSelectedCoin] = useState("ALL");
+  const [selectedCurrency, setSelectedCurrency] = useState("KES");
 
   const filteredUsers =
     selectedCoin === "ALL"
       ? dummyUsers
       : dummyUsers.filter((u) => u.coin === selectedCoin);
 
+  const currency = currencies.find((c) => c.code === selectedCurrency);
+
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6">
-        <DashboardNavbar />
+      <DashboardNavbar />
+
       {/* TITLE */}
       <h1 className="text-3xl font-bold text-center">
         P2P Crypto Marketplace
       </h1>
 
       <p className="text-center text-gray-400 mt-2 mb-6">
-        Buy & Sell Crypto locally with zero fees. Safe and secure P2P exchange
+        Buy & Sell Crypto locally with zero fees
       </p>
 
-      {/* FILTER */}
-      <div className="flex justify-center gap-3 mb-6">
+      {/* COIN FILTER */}
+      <div className="flex justify-center gap-3 mb-4">
         {["ALL", "USDT", "BTC", "ETH"].map((coin) => (
           <button
             key={coin}
@@ -63,6 +81,23 @@ function P2p() {
         ))}
       </div>
 
+      {/* CURRENCY FILTER */}
+      <div className="flex justify-center gap-3 mb-6 flex-wrap">
+        {currencies.map((c) => (
+          <button
+            key={c.code}
+            onClick={() => setSelectedCurrency(c.code)}
+            className={`px-3 py-2 rounded-lg text-sm ${
+              selectedCurrency === c.code
+                ? "bg-blue-500"
+                : "bg-gray-800"
+            }`}
+          >
+            {c.symbol} {c.code}
+          </button>
+        ))}
+      </div>
+
       {/* LISTINGS */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredUsers.map((user) => (
@@ -70,11 +105,10 @@ function P2p() {
             key={user.id}
             className="bg-gray-900 p-5 rounded-xl border border-gray-800"
           >
-
             {/* HEADER */}
             <div className="flex items-center gap-3 mb-3">
               <div
-                className={`w-10 h-10 flex items-center justify-center rounded-full text-white font-bold ${getAvatarColor(
+                className={`w-10 h-10 flex items-center justify-center rounded-full font-bold ${getAvatarColor(
                   user.name
                 )}`}
               >
@@ -93,7 +127,7 @@ function P2p() {
               </div>
             </div>
 
-            {/* MPESA */}
+            {/* PAYMENT METHOD */}
             <div className="mb-3">
               <span className="bg-green-600 text-xs px-3 py-1 rounded-full">
                 MPesa Available
@@ -106,21 +140,25 @@ function P2p() {
             </p>
 
             <p className="mt-2 text-green-400 font-bold">
-              Price: {user.price.toLocaleString()} KES
+              Price: {currency?.symbol}
+              {user.price.toLocaleString()}
             </p>
 
             <p className="text-sm text-gray-400">
-              Limit: {user.limit}
+              Limit: {user.limit} {selectedCurrency}
             </p>
 
-            {/* BUY BUTTON */}
+            {/* BUTTON */}
             <button
-              onClick={() => navigate("/p2p_payment", { state: user })}
+              onClick={() =>
+                navigate("/p2p_payment", {
+                  state: { ...user, currency: selectedCurrency },
+                })
+              }
               className="mt-4 w-full bg-green-500 py-2 rounded-lg hover:bg-green-600"
             >
               Buy {user.coin}
             </button>
-
           </div>
         ))}
       </div>
