@@ -73,16 +73,10 @@ export default function Home() {
       <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
         <h1 className="text-2xl font-bold text-blue-400">Quantum</h1>
         <div className="space-x-6">
-          <button
-            onClick={() => navigate("/auth")}
-            className="text-gray-300 hover:text-white"
-          >
+          <button onClick={() => navigate("/auth")} className="text-gray-300 hover:text-white">
             Sign In
           </button>
-          <button
-            onClick={() => navigate("/auth")}
-            className="bg-blue-600 px-5 py-2 rounded-lg hover:bg-blue-500"
-          >
+          <button onClick={() => navigate("/auth")} className="bg-blue-600 px-5 py-2 rounded-lg hover:bg-blue-500">
             Get Started
           </button>
         </div>
@@ -92,19 +86,10 @@ export default function Home() {
       <section className="overflow-hidden border-b border-slate-800 bg-slate-950">
         <div className="ticker whitespace-nowrap flex animate-ticker">
           {[...forexPairs, ...forexPairs].map((item, index) => (
-            <div
-              key={index}
-              className="inline-flex items-center gap-4 px-6 py-4 text-sm"
-            >
+            <div key={index} className="inline-flex items-center gap-4 px-6 py-4 text-sm">
               <p className="font-semibold">{item.pair}</p>
               <p>{item.price}</p>
-              <p
-                className={
-                  parseFloat(item.change) >= 0
-                    ? "text-green-400"
-                    : "text-red-400"
-                }
-              >
+              <p className={parseFloat(item.change) >= 0 ? "text-green-400" : "text-red-400"}>
                 {item.change}
               </p>
             </div>
@@ -112,26 +97,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* HERO */}
-      <section className="text-center py-24 px-6 bg-slate-950">
-        <img src="/eco background.jpeg" alt="back" />
-        <h2 className="text-5xl font-bold mb-6">Grow Your Wealth Faster</h2>
-        <p className="text-gray-400 max-w-3xl mx-auto mb-10">
-          Our platform uses AI-driven trading tech to maximize your return on investment (ROI)—trusted by investors worldwide.
-        </p>
-        <div className="space-x-4">
+      {/* HERO (UPDATED) */}
+      <section className="py-20 px-6 bg-slate-950">
+        <div className="max-w-6xl mx-auto flex flex-col items-center text-center">
+
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+            AI Trading Algorithm of the Future
+          </h1>
+
+          <h2 className="text-xl md:text-3xl text-slate-300 mb-8">
+            Let the bots trade for you
+          </h2>
+
           <button
-            onClick={() => navigate("/auth")}
-            className="bg-blue-600 px-8 py-3 rounded-lg hover:bg-blue-500"
+            disabled
+            className="px-8 py-4 rounded-xl bg-blue-600/70 text-white font-semibold cursor-not-allowed mb-12"
           >
-            Get Started
+            Launch the Bot
           </button>
-          <button
-            onClick={() => navigate("/auth")}
-            className="border border-gray-600 px-8 py-3 rounded-lg hover:bg-gray-800"
-          >
-            Sign In
-          </button>
+
+          <img
+            src="/quantum_backgrnd.jpeg"
+            alt="Quantum AI Trading"
+            className="w-full max-w-5xl rounded-3xl shadow-2xl border border-slate-800"
+          />
         </div>
       </section>
 
@@ -154,12 +143,9 @@ export default function Home() {
               "AI-powered strategies working 24/7 to grow your capital effortlessly.",
           },
         ].map((item, i) => (
-          <div
-            key={i}
-            className="bg-slate-950 p-8 rounded-xl border border-slate-800"
-          >
+          <div key={i} className="bg-slate-950 p-8 rounded-xl border border-slate-800">
             <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
-            <p className="text-gray-400 mb-6">{item.text}</p>
+            <p className="text-gray-400">{item.text}</p>
           </div>
         ))}
       </section>
@@ -168,19 +154,10 @@ export default function Home() {
       <section className="overflow-hidden border-y border-slate-800 bg-slate-950">
         <div className="ticker whitespace-nowrap flex animate-ticker">
           {[...cryptos, ...cryptos].map((coin, index) => (
-            <div
-              key={index}
-              className="inline-flex items-center gap-4 px-6 py-4 text-sm"
-            >
+            <div key={index} className="inline-flex items-center gap-4 px-6 py-4 text-sm">
               <p className="font-semibold">{coin.name}</p>
               <p>{coin.price}</p>
-              <p
-                className={
-                  parseFloat(coin.change) >= 0
-                    ? "text-green-400"
-                    : "text-red-400"
-                }
-              >
+              <p className={parseFloat(coin.change) >= 0 ? "text-green-400" : "text-red-400"}>
                 {coin.change}
               </p>
             </div>
@@ -201,10 +178,7 @@ export default function Home() {
             { title: "Bank-Level Security", text: "Enterprise-grade encryption protects your funds and data." },
             { title: "24/7 Trading", text: "Automated systems work around the clock for you." },
           ].map((item, i) => (
-            <div
-              key={i}
-              className="bg-slate-950 p-8 rounded-xl border border-slate-800"
-            >
+            <div key={i} className="bg-slate-950 p-8 rounded-xl border border-slate-800">
               <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
               <p className="text-gray-400">{item.text}</p>
             </div>
@@ -218,19 +192,14 @@ export default function Home() {
         <p className="mb-10">
           Join thousands of traders multiplying their portfolios with Eccoearn.
         </p>
-        <button
-          onClick={() => navigate("/auth")}
-          className="bg-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-500"
-        >
+        <button onClick={() => navigate("/auth")} className="bg-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-500">
           Create Free Account
         </button>
       </section>
 
-      {/* ⭐ REVIEWS (IMPROVED - ADDED AVATARS + POLISH) */}
+      {/* REVIEWS */}
       <section className="px-8 py-24 bg-slate-900">
-        <h2 className="text-4xl font-bold text-center mb-4">
-          What Our Users Say
-        </h2>
+        <h2 className="text-4xl font-bold text-center mb-4">What Our Users Say</h2>
 
         <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
           Thousands of traders trust Eccoearn for reliable automated trading and consistent performance.
@@ -238,32 +207,18 @@ export default function Home() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {reviews.map((r, i) => {
-            const initials = r.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("");
+            const initials = r.name.split(" ").map((n) => n[0]).join("");
 
             return (
-              <div
-                key={i}
-                className="bg-slate-950 p-6 rounded-xl border border-slate-800 hover:border-blue-500 transition duration-300"
-              >
-                {/* STARS */}
-                <div className="text-yellow-400 mb-3">
-                  ★★★★★
-                </div>
+              <div key={i} className="bg-slate-950 p-6 rounded-xl border border-slate-800">
+                <div className="text-yellow-400 mb-3">★★★★★</div>
 
-                {/* REVIEW */}
-                <p className="text-gray-300 mb-5 italic">
-                  "{r.review}"
-                </p>
+                <p className="text-gray-300 mb-5 italic">"{r.review}"</p>
 
-                {/* USER */}
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
+                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold">
                     {initials}
                   </div>
-
                   <div>
                     <p className="font-semibold">{r.name}</p>
                     <p className="text-sm text-gray-400">{r.role}</p>
@@ -279,6 +234,7 @@ export default function Home() {
       <footer className="text-center py-6 text-gray-400 border-t border-slate-800 bg-slate-900">
         © 2020 Quantum. All rights reserved.
       </footer>
+
     </div>
   );
 }
