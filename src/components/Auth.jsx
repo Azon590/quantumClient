@@ -130,7 +130,7 @@ export default function AuthForm() {
     try {
       await emailjs.send(
         "service_qgk7f8a",
-        "template_zmfoohs",
+        "template_hev3cqi",
         {
           user_name: signupForm.fullName || "User",
           verification_code: code,
