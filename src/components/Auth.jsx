@@ -129,14 +129,14 @@ export default function AuthForm() {
 
     try {
       await emailjs.send(
-        "service_dk9csjp",
-        "template_lgsd1ga",
+        "service_qgk7f8a",
+        "template_zmfoohs",
         {
           user_name: signupForm.fullName || "User",
           verification_code: code,
           to_email: signupForm.email,
         },
-        "rHMCfjJwQ86mQP0Cp"
+        "9k-y_itAqOFm_eom9"
       );
 
       setSuccess("Verification code sent successfully!");
