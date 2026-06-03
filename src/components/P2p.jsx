@@ -44,7 +44,7 @@ function P2p() {
   const navigate = useNavigate();
 
   const [selectedCoin, setSelectedCoin] = useState("ALL");
-  const [selectedCurrency, setSelectedCurrency] = useState("KES");
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
 
   const filteredUsers =
     selectedCoin === "ALL"
