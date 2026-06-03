@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, X, Mail, Copy } from "lucide-react";
+import { MessageCircle, X, Mail, Copy, Phone } from "lucide-react";
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
@@ -8,53 +8,101 @@ export default function ChatBot() {
   const [input, setInput] = useState("");
 
   const TELEGRAM_LINK = "https://t.me/Crypto_world280o";
-  const EMAIL = "codeazon415@gmail.com";
+  const EMAIL = "quantamlabs1@gmail.com";
+
+  const UK_SUPPORT = "+447988582160";
+  const USA_SUPPORT = "+12135853810";
 
   const openChat = () => {
     setOpen(true);
     setUnread(0);
+
+    if (messages.length === 0) {
+      setMessages([
+        {
+          sender: "bot",
+          text:
+            "👋 Welcome to Quantum Labs Support!\n\nChoose a support option below:\n📞 UK Text Support\n📞 USA Text Support\n📨 Email Support\n💬 Telegram Support",
+        },
+      ]);
+    }
   };
 
   const goToTelegram = () => {
     window.open(TELEGRAM_LINK, "_blank");
   };
 
-  // ✅ ADD EMAIL MESSAGE INTO CHAT
   const showEmailInChat = () => {
-    const emailMsg = {
-      sender: "bot",
-      text: `📩 You can reach us at:\n\n${EMAIL}\n\nTap copy below 👇`,
-      type: "email",
-    };
-
-    setMessages((prev) => [...prev, emailMsg]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "bot",
+        text: `📨 Email Support\n\n${EMAIL}\n\nTap copy below 👇`,
+        type: "email",
+      },
+    ]);
   };
 
-  // ✅ COPY EMAIL
   const copyEmail = async () => {
-    await navigator.clipboard.writeText(EMAIL);
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "✅ Email copied successfully!",
+        },
+      ]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const showPhoneSupport = (country, number) => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "bot",
+        text: `📞 ${country} Support\n\nReach us here:\n${number}`,
+      },
+    ]);
   };
 
   const sendMessage = () => {
     if (!input.trim()) return;
 
-    const userMsg = { sender: "user", text: input };
+    const userMsg = {
+      sender: "user",
+      text: input,
+    };
+
     setMessages((prev) => [...prev, userMsg]);
+
+    const msg = input.toLowerCase();
     setInput("");
 
     let botResponse =
-      "Thanks for your message! Use Telegram or Email support below.";
+      "Thanks for your message! Please use support options below for faster help.";
 
-    if (
-      input.toLowerCase().includes("hi") ||
-      input.toLowerCase().includes("hello")
-    ) {
-      botResponse = "Hi 👋 How can we help you today?";
+    if (msg.includes("hi") || msg.includes("hello")) {
+      botResponse = "👋 Hi there! How can we help you today?";
+    }
+
+    if (msg.includes("email")) {
+      botResponse = `📨 Our email is:\n${EMAIL}`;
+    }
+
+    if (msg.includes("phone") || msg.includes("text")) {
+      botResponse = `📞 UK: ${UK_SUPPORT}\n📞 USA: ${USA_SUPPORT}`;
     }
 
     setTimeout(() => {
-      setMessages((prev) => [...prev, { sender: "bot", text: botResponse }]);
-    }, 500);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: botResponse },
+      ]);
+    }, 400);
   };
 
   const handleKeyPress = (e) => {
@@ -66,7 +114,7 @@ export default function ChatBot() {
       {/* Floating Button */}
       <button
         onClick={openChat}
-        className="fixed right-4 bottom-[calc(3.0rem+env(safe-area-inset-bottom))] z-[9999] w-14 h-14 bg-green-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 transition"
+        className="fixed right-4 bottom-6 z-[9999] w-14 h-14 bg-green-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 transition"
       >
         <MessageCircle size={26} />
 
@@ -77,51 +125,70 @@ export default function ChatBot() {
         )}
       </button>
 
-      {/* Chat Box */}
+      {/* Chat Window */}
       {open && (
-        <div className="fixed right-2 sm:right-6 bottom-[calc(6rem+env(safe-area-inset-bottom))] z-[9999] max-w-full sm:w-80 bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden">
-
+        <div
+          className="
+            fixed right-4 bottom-24
+            z-[9999]
+            w-[92vw] sm:w-80
+            max-h-[80vh]
+            bg-white
+            rounded-xl
+            shadow-2xl
+            flex flex-col
+            overflow-hidden
+          "
+        >
           {/* Header */}
           <div className="bg-green-500 text-white px-4 py-3 flex justify-between items-center">
-            <span className="font-semibold">Support Bot</span>
+            <span className="font-semibold">Quantum Labs Support</span>
             <button onClick={() => setOpen(false)}>
               <X size={18} />
             </button>
           </div>
 
           {/* Messages */}
-          <div
-            className="flex-1 p-4 overflow-y-auto space-y-2"
-            style={{ maxHeight: "300px" }}
-          >
+          <div className="flex-1 p-3 overflow-y-auto space-y-2">
             {messages.map((msg, idx) => (
-              <div key={idx}>
+              <div
+                key={idx}
+                className={`flex ${
+                  msg.sender === "user"
+                    ? "justify-end"
+                    : "justify-start"
+                }`}
+              >
                 <div
-                  className={`${
-                    msg.sender === "bot"
-                      ? "bg-gray-200 text-gray-800 self-start"
-                      : "bg-green-500 text-white self-end"
-                  } px-3 py-2 rounded-xl max-w-[75%] whitespace-pre-line`}
+                  className={`px-3 py-2 rounded-xl whitespace-pre-line break-words overflow-hidden w-fit max-w-[85%] sm:max-w-[75%] ${
+                    msg.sender === "user"
+                      ? "bg-green-500 text-white ml-auto"
+                      : "bg-gray-200 text-gray-800"
+                  }`}
+                  style={{
+                    overflowWrap: "anywhere",
+                    wordBreak: "break-word",
+                  }}
                 >
                   {msg.text}
-                </div>
 
-                {/* COPY BUTTON ONLY FOR EMAIL MESSAGE */}
-                {msg.type === "email" && (
-                  <button
-                    onClick={copyEmail}
-                    className="mt-1 flex items-center gap-1 text-xs text-blue-600 hover:underline"
-                  >
-                    <Copy size={14} />
-                    Copy email
-                  </button>
-                )}
+                  {/* Copy email button */}
+                  {msg.type === "email" && (
+                    <button
+                      onClick={copyEmail}
+                      className="mt-1 text-xs text-blue-600 flex items-center gap-1 hover:underline"
+                    >
+                      <Copy size={14} />
+                      Copy email
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
 
-          {/* INPUT */}
-          <div className="p-4 flex gap-2">
+          {/* Input */}
+          <div className="p-3 flex gap-2 border-t">
             <input
               type="text"
               value={input}
@@ -138,24 +205,38 @@ export default function ChatBot() {
             </button>
           </div>
 
-          {/* SUPPORT OPTIONS */}
-          <div className="p-4 border-t border-gray-200 flex flex-col gap-2">
+          {/* Support Buttons */}
+          <div className="p-3 border-t flex flex-col gap-2">
 
-            {/* Telegram */}
             <button
               onClick={goToTelegram}
               className="w-full bg-green-500 text-white rounded-full py-2 hover:bg-green-600 transition"
             >
-              Chat on Telegram
+              💬 Telegram Support
             </button>
 
-            {/* Email (now inside chat) */}
             <button
               onClick={showEmailInChat}
               className="w-full bg-blue-500 text-white rounded-full py-2 hover:bg-blue-600 transition flex items-center justify-center gap-2"
             >
               <Mail size={16} />
-              Show Email Support
+              Email Support
+            </button>
+
+            <button
+              onClick={() => showPhoneSupport("UK", UK_SUPPORT)}
+              className="w-full bg-purple-500 text-white rounded-full py-2 hover:bg-purple-600 transition flex items-center justify-center gap-2"
+            >
+              <Phone size={16} />
+              UK Text Support
+            </button>
+
+            <button
+              onClick={() => showPhoneSupport("USA", USA_SUPPORT)}
+              className="w-full bg-indigo-500 text-white rounded-full py-2 hover:bg-indigo-600 transition flex items-center justify-center gap-2"
+            >
+              <Phone size={16} />
+              USA Text Support
             </button>
 
           </div>
