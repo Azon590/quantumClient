@@ -72,11 +72,19 @@ export default function Home() {
       {/* NAVBAR */}
       <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
         <h1 className="text-2xl font-bold text-blue-400">Quantum</h1>
+
         <div className="space-x-6">
-          <button onClick={() => navigate("/auth")} className="text-gray-300 hover:text-white">
+          <button
+            onClick={() => navigate("/auth")}
+            className="text-gray-300 hover:text-white"
+          >
             Sign In
           </button>
-          <button onClick={() => navigate("/auth")} className="bg-blue-600 px-5 py-2 rounded-lg hover:bg-blue-500">
+
+          <button
+            onClick={() => navigate("/auth")}
+            className="bg-blue-600 px-5 py-2 rounded-lg hover:bg-blue-500"
+          >
             Get Started
           </button>
         </div>
@@ -97,7 +105,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* HERO (UPDATED) */}
+      {/* HERO */}
       <section className="py-20 px-6 bg-slate-950">
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center">
 
@@ -124,31 +132,107 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ✅ ADDED TRUST / USERS / FINTECH / CERTIFICATION SECTION */}
+      <section className="px-8 py-16 bg-slate-900 border-y border-slate-800">
+
+        <div className="grid md:grid-cols-3 gap-8 text-center">
+
+          <div className="bg-slate-950 p-8 rounded-xl border border-slate-800">
+            <h3 className="text-4xl font-bold text-blue-400">
+              250,000+
+            </h3>
+            <p className="text-gray-400 mt-2">
+              Users Who Have Used the Platform
+            </p>
+          </div>
+
+          <div className="bg-slate-950 p-8 rounded-xl border border-slate-800">
+            <h3 className="text-4xl font-bold text-green-400">
+              25+
+            </h3>
+            <p className="text-gray-400 mt-2">
+              Fintech Companies & Partners
+            </p>
+          </div>
+
+          <div className="bg-slate-950 p-8 rounded-xl border border-slate-800">
+            <h3 className="text-4xl font-bold text-purple-400">
+              99.9%
+            </h3>
+            <p className="text-gray-400 mt-2">
+              System Uptime Reliability
+            </p>
+          </div>
+
+        </div>
+
+        <div className="mt-12 text-center">
+
+          <h2 className="text-2xl font-bold mb-6">
+            Certified & Verified By
+          </h2>
+
+          <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-300">
+
+            <span className="px-4 py-2 bg-slate-950 border border-slate-800 rounded-full">
+              Blockchain Council Certified
+            </span>
+
+            <span className="px-4 py-2 bg-slate-950 border border-slate-800 rounded-full">
+              Microsoft Council Verified
+            </span>
+
+            <span className="px-4 py-2 bg-slate-950 border border-slate-800 rounded-full">
+              USAIII Compliance Approved
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
       {/* FEATURES */}
       <section className="grid md:grid-cols-3 gap-10 px-8 py-20 bg-slate-900">
-        {[
-          {
-            title: "Smarter Trading Gateway",
-            text:
-              "Experience hands-free Crypto trading with cutting-edge automation built for consistent gains.",
-          },
-          {
-            title: "Advanced AI Trading",
-            text:
-              "Join thousands of traders achieving 300% to 700% returns through sophisticated trading algorithms.",
-          },
-          {
-            title: "Turn Idle Funds Into Powerful Earning Tools",
-            text:
-              "AI-powered strategies working 24/7 to grow your capital effortlessly.",
-          },
-        ].map((item, i) => (
-          <div key={i} className="bg-slate-950 p-8 rounded-xl border border-slate-800">
-            <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
-            <p className="text-gray-400">{item.text}</p>
-          </div>
-        ))}
-      </section>
+  {[
+    {
+      title: "Smarter Trading Gateway",
+      text:
+        "Experience hands-free Crypto trading with cutting-edge automation built for consistent gains.",
+      image: "/home1.jpg",
+    },
+    {
+      title: "Advanced AI Trading",
+      text:
+        "Join thousands of traders achieving 300% to 700% returns through sophisticated trading algorithms.",
+      image: "/home2.jpg",
+    },
+    {
+      title: "Turn Idle Funds Into Powerful Earning Tools",
+      text:
+        "AI-powered strategies working 24/7 to grow your capital effortlessly.",
+      image: "/home3.jpg",
+    },
+  ].map((item, i) => (
+    <div
+      key={i}
+      className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden"
+    >
+      {/* IMAGE */}
+      <img
+        src={item.image}
+        alt={item.title}
+        className="w-full h-48 object-cover"
+      />
+
+      {/* CONTENT */}
+      <div className="p-8">
+        <h3 className="text-xl font-semibold mb-4">{item.title}</h3>
+        <p className="text-gray-400">{item.text}</p>
+      </div>
+    </div>
+  ))}
+</section>
 
       {/* CRYPTO TICKER */}
       <section className="overflow-hidden border-y border-slate-800 bg-slate-950">
@@ -166,36 +250,47 @@ export default function Home() {
       </section>
 
       {/* ABOUT */}
-      <section className="px-8 py-24 text-center bg-slate-900">
-        <h2 className="text-4xl font-bold mb-6">Why Choose Eccoearn?</h2>
-        <p className="text-gray-400 max-w-3xl mx-auto mb-12">
-          Experience the ultimate trading platform with cutting-edge features designed for your success.
-        </p>
+      <section
+  className="px-8 py-24 text-center bg-slate-900 bg-cover bg-center relative"
+  style={{ backgroundImage: "url('/home4.jpg')" }}
+>
+  {/* dark overlay for readability */}
+  <div className="absolute inset-0 bg-slate-900/80"></div>
 
-        <div className="grid md:grid-cols-3 gap-10">
-          {[
-            { title: "Lightning Fast", text: "AI-powered algorithms execute trades in milliseconds." },
-            { title: "Bank-Level Security", text: "Enterprise-grade encryption protects your funds and data." },
-            { title: "24/7 Trading", text: "Automated systems work around the clock for you." },
-          ].map((item, i) => (
-            <div key={i} className="bg-slate-950 p-8 rounded-xl border border-slate-800">
-              <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-              <p className="text-gray-400">{item.text}</p>
-            </div>
-          ))}
+  {/* content */}
+  <div className="relative z-10">
+    <h2 className="text-4xl font-bold mb-6">Why Choose Eccoearn?</h2>
+
+    <p className="text-gray-300 max-w-3xl mx-auto mb-12">
+      Experience the ultimate trading platform with cutting-edge features designed for your success.
+    </p>
+
+    <div className="grid md:grid-cols-3 gap-10">
+      {[
+        {
+          title: "Lightning Fast",
+          text: "AI-powered algorithms execute trades in milliseconds.",
+        },
+        {
+          title: "Bank-Level Security",
+          text: "Enterprise-grade encryption protects your funds and data.",
+        },
+        {
+          title: "24/7 Trading",
+          text: "Automated systems work around the clock for you.",
+        },
+      ].map((item, i) => (
+        <div
+          key={i}
+          className="bg-slate-950/90 p-8 rounded-xl border border-slate-800"
+        >
+          <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
+          <p className="text-gray-300">{item.text}</p>
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="text-center py-20 bg-slate-950">
-        <h2 className="text-4xl font-bold mb-6">Ready to Start Trading?</h2>
-        <p className="mb-10">
-          Join thousands of traders multiplying their portfolios with Eccoearn.
-        </p>
-        <button onClick={() => navigate("/auth")} className="bg-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-500">
-          Create Free Account
-        </button>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* REVIEWS */}
       <section className="px-8 py-24 bg-slate-900">
