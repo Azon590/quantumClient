@@ -32,7 +32,7 @@ export default function Home() {
       name: "James K.",
       role: "Crypto Investor",
       review:
-        "Eccoearn completely changed how I trade. The automation is smooth and I’ve seen consistent growth.",
+        "Quantum completely changed how I trade. The automation is smooth and I’ve seen consistent growth.",
     },
     {
       name: "Sarah W.",
@@ -297,7 +297,7 @@ export default function Home() {
         <h2 className="text-4xl font-bold text-center mb-4">What Our Users Say</h2>
 
         <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-          Thousands of traders trust Eccoearn for reliable automated trading and consistent performance.
+          Thousands of traders trust Quantum for reliable automated trading and consistent performance.
         </p>
 
         <div className="grid md:grid-cols-3 gap-8">
