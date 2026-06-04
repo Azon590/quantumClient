@@ -259,7 +259,7 @@ export default function Home() {
 
   {/* content */}
   <div className="relative z-10">
-    <h2 className="text-4xl font-bold mb-6">Why Choose Eccoearn?</h2>
+    <h2 className="text-4xl font-bold mb-6">Why Choose Quantum AI?</h2>
 
     <p className="text-gray-300 max-w-3xl mx-auto mb-12">
       Experience the ultimate trading platform with cutting-edge features designed for your success.
