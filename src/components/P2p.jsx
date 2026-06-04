@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 import DashboardNavbar from "./Navbar";
 
 const dummyUsers = [
-  { id: 1, name: "Alex M.", coin: "USDT", price: 150, limit: "5,000 - 50,000", orders: 120, completion: 98 },
-  { id: 2, name: "Brian K.", coin: "BTC", price: 9000000, limit: "10,000 - 200,000", orders: 45, completion: 95 },
-  { id: 3, name: "Sarah W.", coin: "USDT", price: 152, limit: "2,000 - 30,000", orders: 210, completion: 99 },
-  { id: 4, name: "David O.", coin: "ETH", price: 480000, limit: "20,000 - 500,000", orders: 80, completion: 96 },
-  { id: 5, name: "John M.", coin: "USDT", price: 149, limit: "1,000 - 100,000", orders: 300, completion: 97 },
-  { id: 6, name: "Linda A.", coin: "BTC", price: 9100000, limit: "15,000 - 300,000", orders: 65, completion: 94 },
+  { id: 1, name: "Amina M.", coin: "USDT", price: 150, limit: "5,000 - 50,000", orders: 120, completion: 98 },
+  { id: 2, name: "Wei K.", coin: "BTC", price: 9000000, limit: "10,000 - 200,000", orders: 45, completion: 95 },
+  { id: 3, name: "Raj W.", coin: "USDT", price: 152, limit: "2,000 - 30,000", orders: 210, completion: 99 },
+  { id: 4, name: "José O.", coin: "ETH", price: 480000, limit: "20,000 - 500,000", orders: 80, completion: 96 },
+  { id: 5, name: "Thabo M.", coin: "USDT", price: 149, limit: "1,000 - 100,000", orders: 300, completion: 97 },
+  { id: 6, name: "Yuki A.", coin: "BTC", price: 9100000, limit: "15,000 - 300,000", orders: 65, completion: 94 },
   { id: 7, name: "Kevin P.", coin: "USDT", price: 151, limit: "3,000 - 80,000", orders: 150, completion: 98 },
-  { id: 8, name: "Grace N.", coin: "ETH", price: 475000, limit: "10,000 - 250,000", orders: 90, completion: 97 },
-  { id: 9, name: "Mark T.", coin: "USDT", price: 150, limit: "5,000 - 120,000", orders: 170, completion: 96 },
-  { id: 10, name: "Nancy J.", coin: "BTC", price: 9050000, limit: "25,000 - 400,000", orders: 55, completion: 95 },
+  { id: 8, name: "Ola N.", coin: "ETH", price: 475000, limit: "10,000 - 250,000", orders: 90, completion: 97 },
+  { id: 9, name: "Chidi T.", coin: "USDT", price: 150, limit: "5,000 - 120,000", orders: 170, completion: 96 },
+  { id: 10, name: "Kat J.", coin: "BTC", price: 9050000, limit: "25,000 - 400,000", orders: 55, completion: 95 },
 ];
 
 // supported currencies
