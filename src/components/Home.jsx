@@ -126,7 +126,7 @@ export default function Home() {
 
           <img
             src="/quantum_backgrnd.jpeg"
-            alt="Quantum AI Trading"
+            alt="Norvex Capital AI Trading"
             className="w-full max-w-5xl rounded-3xl shadow-2xl border border-slate-800"
           />
         </div>
