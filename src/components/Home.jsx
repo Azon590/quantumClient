@@ -324,10 +324,20 @@ export default function Home() {
           })}
         </div>
       </section>
+      {/* PAYMENT METHODS & TRUST BADGES */}
+<section className="bg-slate-900 border-t border-slate-800 py-12">
+  <div className="max-w-6xl mx-auto px-6">
+    <img
+      src="/payment-methods.jpeg"
+      alt="Payment Methods and Security Certifications"
+      className="w-full max-w-5xl mx-auto object-contain"
+    />
+  </div>
+</section>
 
       {/* FOOTER */}
       <footer className="text-center py-6 text-gray-400 border-t border-slate-800 bg-slate-900">
-        © 2020 Quantum. All rights reserved.
+        © 2020 Norvex Capital AI. All rights reserved.
       </footer>
 
     </div>
