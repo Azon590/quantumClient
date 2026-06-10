@@ -60,14 +60,14 @@ export default function AuthForm() {
         setCountries(formatted);
 
         setSelectedCountry(
-          formatted.find((c) => c.name === "Kenya") || formatted[0]
+          formatted.find((c) => c.name === "United States") || formatted[0]
         );
       } catch {
         const fallback = [
           {
-            name: "Kenya",
-            code: "+254",
-            flag: "https://flagcdn.com/w20/ke.png",
+            name: "United States",
+    code: "+1",
+    flag: "https://flagcdn.com/w20/us.png",
           },
         ];
 
