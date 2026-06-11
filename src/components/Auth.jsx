@@ -456,7 +456,7 @@ export default function AuthForm() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 to-blue-800 px-4">
       <div className="w-full max-w-md bg-gray-900 rounded-xl shadow-lg p-6">
         <h1 className="text-3xl font-bold text-white text-center mb-2">
-          Welcome to Norvex Capital AI
+          Welcome to Crypteliom AI
         </h1>
         <p className="text-gray-300 text-center mb-6">
           Your trusted platform for cryptocurrency trading

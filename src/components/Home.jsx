@@ -126,7 +126,7 @@ export default function Home() {
 
           <img
             src="/quantum_backgrnd.jpeg"
-            alt="Norvex Capital AI Trading"
+            alt="Crypteliom AI Trading"
             className="w-full max-w-5xl rounded-3xl shadow-2xl border border-slate-800"
           />
         </div>
@@ -337,7 +337,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="text-center py-6 text-gray-400 border-t border-slate-800 bg-slate-900">
-        © 2020 Norvex Capital AI. All rights reserved.
+        © 2020 Crypteliom  AI. All rights reserved.
       </footer>
 
     </div>
