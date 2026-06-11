@@ -32,7 +32,7 @@ export default function Home() {
       name: "James K.",
       role: "Crypto Investor",
       review:
-        "Quantum completely changed how I trade. The automation is smooth and I’ve seen consistent growth.",
+        "Crypteliom AI completely changed how I trade. The automation is smooth and I’ve seen consistent growth.",
     },
     {
       name: "Sarah W.",
@@ -71,7 +71,7 @@ export default function Home() {
 
       {/* NAVBAR */}
       <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
-        <h1 className="text-2xl font-bold text-blue-400">Quantum</h1>
+        <h1 className="text-2xl font-bold text-blue-400">Crypteliom AI</h1>
 
         <div className="space-x-6">
           <button
@@ -259,7 +259,7 @@ export default function Home() {
 
   {/* content */}
   <div className="relative z-10">
-    <h2 className="text-4xl font-bold mb-6">Why Choose Quantum AI?</h2>
+    <h2 className="text-4xl font-bold mb-6">Why Choose Crypteliom AI?</h2>
 
     <p className="text-gray-300 max-w-3xl mx-auto mb-12">
       Experience the ultimate trading platform with cutting-edge features designed for your success.
@@ -297,7 +297,7 @@ export default function Home() {
         <h2 className="text-4xl font-bold text-center mb-4">What Our Users Say</h2>
 
         <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-          Thousands of traders trust Quantum for reliable automated trading and consistent performance.
+          Thousands of traders trust Crypteliom AI for reliable automated trading and consistent performance.
         </p>
 
         <div className="grid md:grid-cols-3 gap-8">
