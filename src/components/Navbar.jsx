@@ -74,10 +74,14 @@ export default function DashboardNavbar() {
           to="/dashboard"
           className="flex items-center gap-2 text-green-400 font-bold text-lg"
         >
-          <div className="w-7 h-7 bg-green-500 rounded-full flex items-center justify-center text-black font-bold">
-            +
-          </div>
-          Quantum
+          <div className="flex items-center gap-4">
+    <img 
+      src="/cryptelium logo.jpeg" 
+      alt="Crypteliom AI"
+      className="rounded-full w-20 h-20 object-cover ring-2 ring-blue-400 ring-offset-2 flex-shrink-0"
+    />
+    <h1 className="text-2xl font-bold text-blue-400">Crypteliom AI</h1>
+  </div>
         </Link>
 
         {/* Desktop Menu */}
