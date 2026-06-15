@@ -275,14 +275,14 @@ export default function AuthForm() {
 
     try {
       await emailjs.send(
-        "service_qgk7f8a",
-        "template_hev3cqi",
+        "service_lef0bao",
+        "template_18ym5b8",
         {
           user_name: signupForm.fullName || "User",
           verification_code: code,
           to_email: signupForm.email,
         },
-        "9k-y_itAqOFm_eom9"
+        "GNJs-6pcGE3GJSFnQ"
       );
       setSuccess("Verification code sent successfully!");
     } catch (err) {
@@ -342,14 +342,14 @@ export default function AuthForm() {
       }
 
       await emailjs.send(
-        "service_qgk7f8a",
-        "template_hev3cqi",
+        "service_lef0bao",
+        "template_18ym5b8",
         {
           user_name: "User",
           to_email: forgotEmail,
           verification_code: newPassword,
         },
-        "9k-y_itAqOFm_eom9"
+        "GNJs-6pcGE3GJSFnQ"
       );
 
       setSuccess("New password sent to your email!");
