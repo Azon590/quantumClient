@@ -22,7 +22,7 @@ export default function ChatBot() {
         {
           sender: "bot",
           text:
-            "👋 Welcome to Quantum Labs Support!\n\nChoose a support option below:\n📞 UK Text Support\n📞 USA Text Support\n📨 Email Support\n💬 Telegram Support",
+            "👋 Welcome to Crypteliom AI Support!\n\nChoose a support option below:\n📞 UK Text Support\n📞 USA Text Support\n📨 Email Support\n💬 Telegram Support",
         },
       ]);
     }
@@ -142,7 +142,7 @@ export default function ChatBot() {
         >
           {/* Header */}
           <div className="bg-green-500 text-white px-4 py-3 flex justify-between items-center">
-            <span className="font-semibold">Quantum Labs Support</span>
+            <span className="font-semibold">Crypteliom AI Support</span>
             <button onClick={() => setOpen(false)}>
               <X size={18} />
             </button>
