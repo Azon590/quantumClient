@@ -56,7 +56,7 @@ export default function BotRunning() {
       let pnl;
 
       if (isWin) {
-        pnl = +(Math.random() * 0.8 + 0.2).toFixed(2);
+        pnl = +(Math.random() * 3 + 2).toFixed(2);
       } else {
         pnl = -+(Math.random() * 0.25 + 0.05).toFixed(2);
       }
