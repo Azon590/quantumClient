@@ -5,7 +5,6 @@ import DashboardNavbar from "./Navbar";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function BotRunning() {
-
   const location = useLocation();
   const botName = location.state?.botName || "Unknown Bot";
 
@@ -20,8 +19,12 @@ export default function BotRunning() {
       }
     : { id: null, balance: { balance: 0 } };
 
-  const storedConfigs = JSON.parse(localStorage.getItem("botConfigs")) || {};
-  const configuredAmount = Number(storedConfigs[botName]?.amount ?? 0);
+  const storedConfigs =
+    JSON.parse(localStorage.getItem("botConfigs")) || {};
+
+  const configuredAmount = Number(
+    storedConfigs[botName]?.amount ?? 0
+  );
 
   const [botAmount, setBotAmount] = useState(configuredAmount);
   const [trades, setTrades] = useState(0);
@@ -31,34 +34,39 @@ export default function BotRunning() {
   const [loading, setLoading] = useState(false);
   const [profit, setProfit] = useState(0);
 
-  const intervalRef = useRef(null);
+  const tradeTimeoutRef = useRef(null);
 
   const totalPL = +profit.toFixed(2);
   const isProfit = totalPL >= 0;
 
-  /* BOT START */
+  /* ================= BOT START ================= */
 
   useEffect(() => {
     startBot();
-    return () => clearInterval(intervalRef.current);
+
+    return () => {
+      if (tradeTimeoutRef.current) {
+        clearTimeout(tradeTimeoutRef.current);
+      }
+    };
   }, []);
 
   const startBot = () => {
-
-    if (intervalRef.current) return;
+    if (tradeTimeoutRef.current) return;
 
     setRunning(true);
 
-    intervalRef.current = setInterval(() => {
-
-      const isWin = Math.random() < 0.7;
+    const runTrade = () => {
+      const isWin = Math.random() < 0.6;
 
       let pnl;
 
       if (isWin) {
-        pnl = +(Math.random() * 3 + 2).toFixed(2);
+        // +2 to +6
+        pnl = +(Math.random() * 4 + 2).toFixed(2);
       } else {
-        pnl = -+(Math.random() * 0.25 + 0.05).toFixed(2);
+        // 0 to -3
+        pnl = -+(Math.random() * 4).toFixed(2);
       }
 
       setBotAmount((prev) => +(prev + pnl).toFixed(2));
@@ -66,7 +74,10 @@ export default function BotRunning() {
       setProfit((prev) => +(prev + pnl).toFixed(2));
 
       setWinRate((w) =>
-        Math.min(90, Math.max(60, +(w + (isWin ? 0.2 : -0.5)).toFixed(1)))
+        Math.min(
+          90,
+          Math.max(60, +(w + (isWin ? 0.2 : -0.5)).toFixed(1))
+        )
       );
 
       const btcPrice = (44850 + Math.random() * 300).toFixed(1);
@@ -81,36 +92,44 @@ export default function BotRunning() {
         pnl,
       });
 
-    }, 3000);
+      const nextDelay = Math.floor(Math.random() * 4000) + 1000;
+
+      tradeTimeoutRef.current = setTimeout(runTrade, nextDelay);
+    };
+
+    runTrade();
   };
 
   const pauseBot = () => {
-
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
+    if (tradeTimeoutRef.current) {
+      clearTimeout(tradeTimeoutRef.current);
+      tradeTimeoutRef.current = null;
+    }
 
     setRunning(false);
-
     addSystemLog("Bot paused");
   };
 
   const stopBot = async () => {
-
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
+    if (tradeTimeoutRef.current) {
+      clearTimeout(tradeTimeoutRef.current);
+      tradeTimeoutRef.current = null;
+    }
 
     setRunning(false);
     setLoading(true);
 
     try {
-
-      const res = await fetch(`${API_URL}/users/${user.id}/balance`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: +botAmount.toFixed(2),
-        }),
-      });
+      const res = await fetch(
+        `${API_URL}/users/${user.id}/balance`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: +botAmount.toFixed(2),
+          }),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to update balance");
 
@@ -130,31 +149,34 @@ export default function BotRunning() {
         },
       };
 
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+      localStorage.setItem(
+        "user",
+        JSON.stringify(updatedUser)
+      );
 
       const updatedConfigs = { ...storedConfigs };
       delete updatedConfigs[botName];
 
-      localStorage.setItem("botConfigs", JSON.stringify(updatedConfigs));
+      localStorage.setItem(
+        "botConfigs",
+        JSON.stringify(updatedConfigs)
+      );
 
       addSystemLog("Bot stopped");
-      addSystemLog(`Wallet credited: $${numericBalance.toFixed(2)}`);
-
+      addSystemLog(
+        `Wallet credited: $${numericBalance.toFixed(2)}`
+      );
     } catch (err) {
-
       console.error(err);
-
       addSystemLog("Failed to update wallet balance");
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
-  const addLog = ({ symbol, side, price, size, pnl }) => {
+  /* ================= LOGS ================= */
 
+  const addLog = ({ symbol, side, price, size, pnl }) => {
     setLogs((prev) => [
       {
         type: "trade",
@@ -170,7 +192,6 @@ export default function BotRunning() {
   };
 
   const addSystemLog = (message) => {
-
     setLogs((prev) => [
       {
         type: "system",
@@ -181,14 +202,19 @@ export default function BotRunning() {
     ]);
   };
 
+  /* ================= UI ================= */
+
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
-
       <DashboardNavbar />
 
       <div className="p-4 border-b border-gray-800">
-        <h1 className="text-lg font-semibold">{botName} Bot</h1>
-        <p className="text-xs text-gray-400">Bot ID: dca-1 • Account: Real</p>
+        <h1 className="text-lg font-semibold">
+          {botName} Bot
+        </h1>
+        <p className="text-xs text-gray-400">
+          Bot ID: dca-1 • Account: Real
+        </p>
       </div>
 
       <div
@@ -200,7 +226,6 @@ export default function BotRunning() {
       </div>
 
       <div className="flex gap-3 p-4">
-
         <button
           onClick={startBot}
           disabled={running || loading}
@@ -224,39 +249,45 @@ export default function BotRunning() {
         >
           {loading ? "Stopping..." : "Stop Bot"}
         </button>
-
       </div>
 
       <div className="grid grid-cols-2 gap-4 px-4">
-
-        <StatCard label="Bot Balance" value={`$${botAmount}`} accent="green" />
+        <StatCard
+          label="Bot Balance"
+          value={`$${botAmount}`}
+          accent="green"
+        />
 
         <StatCard
           label="Total P/L"
-          value={`${isProfit ? "+" : "-"}$${Math.abs(totalPL)}`}
+          value={`${isProfit ? "+" : "-"}$${Math.abs(
+            totalPL
+          )}`}
           accent={isProfit ? "green" : "red"}
         />
 
-        <StatCard label="Total Trades" value={trades} accent="purple" />
+        <StatCard
+          label="Total Trades"
+          value={trades}
+          accent="purple"
+        />
 
-        <StatCard label="Win Rate" value={`${winRate}%`} accent="yellow" />
-
+        <StatCard
+          label="Win Rate"
+          value={`${winRate}%`}
+          accent="yellow"
+        />
       </div>
 
       {/* LOGS */}
-
       <div className="px-4 mt-4 mb-20">
-
         <h3 className="text-sm text-gray-400 mb-2">
           Trading Activity ({logs.length})
         </h3>
 
         <div className="bg-black rounded-lg p-3 text-xs font-mono">
-
           {logs.map((log, i) => {
-
             if (log.type === "system") {
-
               return (
                 <p key={i} className="text-gray-400 py-1">
                   [{log.time}] {log.message}
@@ -269,10 +300,13 @@ export default function BotRunning() {
                 key={i}
                 className="grid grid-cols-5 gap-2 py-1 border-b border-gray-800"
               >
+                <span className="text-gray-500">
+                  [{log.time}]
+                </span>
 
-                <span className="text-gray-500">[{log.time}]</span>
-
-                <span className="text-yellow-400">{log.symbol}</span>
+                <span className="text-yellow-400">
+                  {log.symbol}
+                </span>
 
                 <span
                   className={
@@ -295,23 +329,21 @@ export default function BotRunning() {
                       : "text-red-400 font-semibold"
                   }
                 >
-                  {log.pnl >= 0 ? "+" : "-"}${Math.abs(log.pnl)}
+                  {log.pnl >= 0 ? "+" : "-"}$
+                  {Math.abs(log.pnl)}
                 </span>
-
               </div>
             );
           })}
-
         </div>
-
       </div>
-
     </div>
   );
 }
 
-function StatCard({ label, value, accent }) {
+/* ================= STAT CARD ================= */
 
+function StatCard({ label, value, accent }) {
   const accents = {
     green: "border-green-500",
     purple: "border-purple-500",
@@ -320,7 +352,9 @@ function StatCard({ label, value, accent }) {
   };
 
   return (
-    <div className={`bg-gray-900 border-l-4 ${accents[accent]} rounded p-3`}>
+    <div
+      className={`bg-gray-900 border-l-4 ${accents[accent]} rounded p-3`}
+    >
       <p className="text-xs text-gray-400">{label}</p>
       <p className="text-lg font-bold">{value}</p>
     </div>
