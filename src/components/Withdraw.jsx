@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 function Withdraw() {
   const [method, setMethod] = useState("crypto");
   const [selectedCrypto, setSelectedCrypto] = useState("bitcoin");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [mpesaNumber, setMpesaNumber] = useState("");
   const [bankDetails, setBankDetails] = useState({
