@@ -27,23 +27,50 @@ function Withdraw() {
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
     setUser(storedUser);
+
     if (storedUser.balance?.balance) {
       setAvailableBalance(storedUser.balance.balance);
     }
   }, []);
 
   const cryptoOptions = [
-    { id: "bitcoin", name: "Bitcoin", icon: <FaBitcoin size={28} />, color: "#F7931A" },
-    { id: "usdt", name: "USDT (TRC20)", icon: <SiTether size={28} />, color: "#26A17B" },
-    { id: "ethereum", name: "Ethereum", icon: <FaEthereum size={28} />, color: "#3C3C3D" },
+    {
+      id: "bitcoin",
+      name: "Bitcoin",
+      icon: <FaBitcoin size={28} />,
+      color: "#F7931A",
+    },
+    {
+      id: "usdt",
+      name: "USDT (TRC20)",
+      icon: <SiTether size={28} />,
+      color: "#26A17B",
+    },
+    {
+      id: "ethereum",
+      name: "Ethereum",
+      icon: <FaEthereum size={28} />,
+      color: "#3C3C3D",
+    },
   ];
 
   /* ================= VALIDATION ================= */
 
   const validateAmount = () => {
-    if (availableBalance < 50) return "Minimum balance of $50 required.";
-    if (!amount || amount <= 0) return "Enter valid withdrawal amount.";
-    if (amount > availableBalance) return "Insufficient balance.";
+    const numericAmount = Number(amount);
+
+    if (availableBalance < 50) {
+      return "Minimum balance of $50 required.";
+    }
+
+    if (!amount || numericAmount <= 0) {
+      return "Enter valid withdrawal amount.";
+    }
+
+    if (numericAmount > availableBalance) {
+      return "Insufficient balance.";
+    }
+
     return "";
   };
 
@@ -58,42 +85,66 @@ function Withdraw() {
     const amountError = validateAmount();
     if (amountError) return setError(amountError);
 
-    if (method === "crypto" && !walletAddress) {
+    if (method === "crypto" && !walletAddress.trim()) {
       return setError("Enter wallet address.");
     }
 
-    if (method === "mpesa" && !mpesaNumber) {
+    if (method === "mpesa" && !mpesaNumber.trim()) {
       return setError("Enter M-Pesa phone number.");
     }
 
-    if (method === "bank" && (!bankDetails.bankName || !bankDetails.accountNumber)) {
+    if (
+      method === "bank" &&
+      (!bankDetails.bankName.trim() ||
+        !bankDetails.accountNumber.trim())
+    ) {
       return setError("Complete bank details.");
     }
 
     setProcessing(true);
 
     try {
+      const numericAmount = Number(amount);
+
       const res = await fetch(`${API_URL}/users/${user.id}/balance`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: (-amount).toString() }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: (-numericAmount).toString(),
+        }),
       });
 
       if (!res.ok) throw new Error();
 
-      const newBalance = availableBalance - amount;
+      const newBalance = availableBalance - numericAmount;
+
       setAvailableBalance(newBalance);
 
       const updatedUser = {
         ...user,
-        balance: { ...user.balance, balance: newBalance },
+        balance: {
+          ...user.balance,
+          balance: newBalance,
+        },
       };
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
+
       setSuccess(true);
-      setAmount(0);
+
+      // Reset form
+      setAmount("");
       setWalletAddress("");
       setMpesaNumber("");
+
+      setBankDetails({
+        bankName: "",
+        accountNumber: "",
+        accountName: "",
+        swift: "",
+      });
     } catch {
       setError("Withdrawal failed. Try again.");
     } finally {
@@ -109,7 +160,9 @@ function Withdraw() {
 
       {/* Balance */}
       <div className="mt-5 bg-blue-800 rounded-xl p-4 text-center">
-        <p className="text-2xl font-bold">${availableBalance.toFixed(2)}</p>
+        <p className="text-2xl font-bold">
+          ${availableBalance.toFixed(2)}
+        </p>
         <p className="text-sm text-blue-200">Available Balance</p>
       </div>
 
@@ -142,33 +195,38 @@ function Withdraw() {
                     : "border-blue-700"
                 }`}
               >
-                <div style={{ color: crypto.color }}>{crypto.icon}</div>
+                <div style={{ color: crypto.color }}>
+                  {crypto.icon}
+                </div>
                 <div className="text-sm">{crypto.name}</div>
               </div>
             ))}
           </div>
 
-          {/* Amount */}
           <div>
-            <label className="text-sm text-blue-200">Amount (USD)</label>
+            <label className="text-sm text-blue-200">
+              Amount (USD)
+            </label>
             <input
               type="number"
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(e.target.value)}
               className="w-full mt-1 px-4 py-2 rounded-lg bg-blue-800 border border-blue-700"
               disabled={processing}
             />
           </div>
 
-          {/* Wallet */}
           <div>
-            <label className="text-sm text-blue-200">Your Wallet Address</label>
+            <label className="text-sm text-blue-200">
+              Your Wallet Address
+            </label>
             <textarea
               rows={3}
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
               placeholder="Enter your wallet address"
               className="w-full mt-1 px-3 py-2 rounded-lg bg-black text-white text-sm break-all"
+              disabled={processing}
             />
           </div>
         </div>
@@ -177,13 +235,14 @@ function Withdraw() {
       {/* ================= BANK ================= */}
       {method === "bank" && (
         <div className="mt-5 space-y-3">
-          {/* Amount */}
           <div>
-            <label className="text-sm text-blue-200">Amount (USD)</label>
+            <label className="text-sm text-blue-200">
+              Amount (USD)
+            </label>
             <input
               type="number"
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(e.target.value)}
               className="w-full mt-1 px-4 py-2 rounded-lg bg-blue-800 border border-blue-700"
               disabled={processing}
             />
@@ -191,27 +250,39 @@ function Withdraw() {
 
           <input
             type="text"
+            value={bankDetails.bankName}
             placeholder="Bank Name"
             onChange={(e) =>
-              setBankDetails({ ...bankDetails, bankName: e.target.value })
+              setBankDetails({
+                ...bankDetails,
+                bankName: e.target.value,
+              })
             }
             className="w-full px-4 py-2 rounded-lg bg-blue-800 border border-blue-700"
           />
 
           <input
             type="text"
+            value={bankDetails.accountNumber}
             placeholder="Account Number"
             onChange={(e) =>
-              setBankDetails({ ...bankDetails, accountNumber: e.target.value })
+              setBankDetails({
+                ...bankDetails,
+                accountNumber: e.target.value,
+              })
             }
             className="w-full px-4 py-2 rounded-lg bg-blue-800 border border-blue-700"
           />
 
           <input
             type="text"
+            value={bankDetails.accountName}
             placeholder="Account Holder Name"
             onChange={(e) =>
-              setBankDetails({ ...bankDetails, accountName: e.target.value })
+              setBankDetails({
+                ...bankDetails,
+                accountName: e.target.value,
+              })
             }
             className="w-full px-4 py-2 rounded-lg bg-blue-800 border border-blue-700"
           />
@@ -221,13 +292,14 @@ function Withdraw() {
       {/* ================= MPESA ================= */}
       {method === "mpesa" && (
         <div className="mt-5 space-y-3">
-          {/* Amount */}
           <div>
-            <label className="text-sm text-blue-200">Amount (USD)</label>
+            <label className="text-sm text-blue-200">
+              Amount (USD)
+            </label>
             <input
               type="number"
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(e.target.value)}
               className="w-full mt-1 px-4 py-2 rounded-lg bg-blue-800 border border-blue-700"
               disabled={processing}
             />
@@ -244,7 +316,10 @@ function Withdraw() {
       )}
 
       {/* ERROR / SUCCESS */}
-      {error && <p className="text-red-400 mt-3 text-sm">{error}</p>}
+      {error && (
+        <p className="text-red-400 mt-3 text-sm">{error}</p>
+      )}
+
       {success && (
         <p className="text-green-400 mt-3 text-sm">
           Withdrawal Successful!
@@ -255,7 +330,7 @@ function Withdraw() {
       <button
         onClick={handleWithdraw}
         disabled={isDisabled}
-        className="w-full mt-6 py-3 bg-blue-600 rounded-lg"
+        className="w-full mt-6 py-3 bg-blue-600 rounded-lg disabled:opacity-50"
       >
         {processing ? "Processing..." : "Withdraw"}
       </button>
