@@ -70,32 +70,26 @@ export default function Home() {
     <div className="bg-slate-900 text-white">
 
       {/* NAVBAR */}
-      <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
-        <div className="flex items-center gap-4">
-  <img 
-    src="/cryptelium logo.jpeg" 
-    alt="Crypteliom AI"
-    className="rounded-full w-20 h-20 object-cover ring-2 ring-blue-400 ring-offset-2 flex-shrink-0"
-  />
-  <h1 className="text-2xl font-bold text-blue-400">Crypteliom AI</h1>
-</div>
+      <header className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 border-b border-slate-800">
+  <div className="flex items-center gap-3 sm:gap-4">
+    <img
+      src="/cryptelium logo.jpeg"
+      alt="Crypteliom AI"
+      className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover ring-2 ring-blue-400 flex-shrink-0"
+    />
 
-        <div className="space-x-6">
-          <button
-            onClick={() => navigate("/auth")}
-            className="text-gray-300 hover:text-white"
-          >
-            Sign In
-          </button>
+    <h1 className="text-lg sm:text-2xl font-bold text-blue-400">
+      Crypteliom AI
+    </h1>
+  </div>
 
-          <button
-            onClick={() => navigate("/auth")}
-            className="bg-blue-600 px-5 py-2 rounded-lg hover:bg-blue-500"
-          >
-            Get Started
-          </button>
-        </div>
-      </header>
+  <button
+    onClick={() => navigate("/auth")}
+    className="bg-blue-600 hover:bg-blue-500 px-4 py-2 sm:px-5 rounded-lg text-sm sm:text-base font-medium transition-colors"
+  >
+    Sign In
+  </button>
+</header>
 
       {/* FOREX TICKER */}
       <section className="overflow-hidden border-b border-slate-800 bg-slate-950">
@@ -131,10 +125,10 @@ export default function Home() {
 </p>
 
           <button
-            disabled
-            className="px-8 py-4 rounded-xl bg-blue-600/70 text-white font-semibold cursor-not-allowed mb-12"
+            onClick={() => navigate("/auth")}
+            className="px-8 py-4 rounded-xl bg-blue-600/70 text-white font-semibold  mb-12"
           >
-            Launch the Bot
+            Get started
           </button>
 
           <img
