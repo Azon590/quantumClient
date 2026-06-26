@@ -73,7 +73,7 @@ export default function Home() {
       <header className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 border-b border-slate-800">
   <div className="flex items-center gap-3 sm:gap-4">
     <img
-      src="/cryptelium logo.jpeg"
+      src="/logo.png"
       alt="Crypteliom AI"
       className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover ring-2 ring-blue-400 flex-shrink-0"
     />

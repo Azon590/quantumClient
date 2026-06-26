@@ -76,7 +76,7 @@ export default function DashboardNavbar() {
         >
           <div className="flex items-center gap-4">
     <img 
-      src="/cryptelium logo.jpeg" 
+      src="/logo.png" 
       alt="Crypteliom AI"
       className="rounded-full w-20 h-20 object-cover ring-2 ring-blue-400 ring-offset-2 flex-shrink-0"
     />
