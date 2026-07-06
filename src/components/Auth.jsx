@@ -275,8 +275,8 @@ export default function AuthForm() {
 
     try {
       await emailjs.send(
-        "service_lef0bao",
-        "template_18ym5b8",
+        "service_fqr9brd",
+        "template_2s4jmik",
         {
           user_name: signupForm.fullName || "User",
           verification_code: code,
@@ -342,8 +342,8 @@ export default function AuthForm() {
       }
 
       await emailjs.send(
-        "service_lef0bao",
-        "template_18ym5b8",
+        "service_fqr9brd",
+        "template_2s4jmik",
         {
           user_name: "User",
           to_email: forgotEmail,
