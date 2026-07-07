@@ -228,7 +228,7 @@ export default function ChatBot() {
               className="w-full bg-purple-500 text-white rounded-full py-2 hover:bg-purple-600 transition flex items-center justify-center gap-2"
             >
               <Phone size={16} />
-              UK Text Support
+              UK Whatsapp Support
             </button>
 
             <button
