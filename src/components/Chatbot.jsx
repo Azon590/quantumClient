@@ -7,7 +7,7 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
-  const TELEGRAM_LINK = "https://t.me/Crypto_world280o";
+  const TELEGRAM_LINK = "http://t.me/ARIFNASEEM_FX";
   const EMAIL = "crypteliomai@gmail.com";
 
   const UK_SUPPORT = "+447988582160";
